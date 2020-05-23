@@ -1,6 +1,6 @@
 package com.sun.FSM.enums;
 
-public enum OrderStatusChangeEvent {
+public enum ChangeEvent {
     PAYED,
     DELIVERY,
     RECEIVED;

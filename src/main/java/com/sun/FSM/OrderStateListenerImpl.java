@@ -1,7 +1,7 @@
 package com.sun.FSM;
 
 import com.sun.FSM.enums.OrderStatus;
-import com.sun.FSM.enums.OrderStatusChangeEvent;
+import com.sun.FSM.enums.ChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class OrderStateListenerImpl extends StateMachineListenerAdapter<OrderStatus, OrderStatusChangeEvent> {
+public class OrderStateListenerImpl extends StateMachineListenerAdapter<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void stateChanged(State<OrderStatus, OrderStatusChangeEvent> from, State<OrderStatus, OrderStatusChangeEvent> to) {
+    public void stateChanged(State<OrderStatus, ChangeEvent> from, State<OrderStatus, ChangeEvent> to) {
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -31,7 +31,7 @@ public class OrderStateListenerImpl extends StateMachineListenerAdapter<OrderSta
     }
 
     @Override
-    public void transition(Transition<OrderStatus, OrderStatusChangeEvent> transition) {
+    public void transition(Transition<OrderStatus, ChangeEvent> transition) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("transition");

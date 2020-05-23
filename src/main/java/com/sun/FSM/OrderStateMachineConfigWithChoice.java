@@ -118,7 +118,12 @@ public class OrderStateMachineConfigWithChoice extends EnumStateMachineConfigure
                     .source(OrderStatus.WAIT_RECEIVE)
                     .first(OrderStatus.FINISH, receivedSuccessChoiceGuard, receivedSuccessAction)
                     .then(OrderStatus.WAIT_RECEIVE, receivedFailedChoiceGuard, receivedFailAction)
-                    .last(OrderStatus.FINISH);
+                    .last(OrderStatus.FINISH)
+                .and()
+                .withExternal()
+                .source(OrderStatus.WAIT_PAYMENT)
+                .target(OrderStatus.WAIT_DELIVER)
+                .event(ChangeEvent.PAYED);
     }
 
     @Override

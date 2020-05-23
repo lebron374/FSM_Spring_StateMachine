@@ -13,13 +13,12 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class PayedSuccessAction implements Action<OrderStatus, ChangeEvent> {
+public class CommentedAction implements Action<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void execute(StateContext<OrderStatus, ChangeEvent> context) {
-
-        logger.info("PayedSuccessAction execute");
+        logger.info("CommentedAction execute");
     }
 }

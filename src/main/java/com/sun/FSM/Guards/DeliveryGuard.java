@@ -5,11 +5,13 @@ import com.sun.FSM.enums.ChangeEvent;
 import com.sun.FSM.enums.OrderStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author lebron374
+ */
 @Component
 public class DeliveryGuard implements Guard<OrderStatus, ChangeEvent> {
 

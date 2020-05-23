@@ -1,18 +1,12 @@
 package com.sun.FSM;
 
-import com.sun.FSM.Guards.DeliveryFailedChoiceGuard;
+import com.sun.FSM.Guards.CommentGuard;
 import com.sun.FSM.Guards.DeliveryGuard;
-import com.sun.FSM.Guards.DeliverySuccessGuard;
-import com.sun.FSM.Guards.PayedFailedChoiceGuard;
-import com.sun.FSM.Guards.PayedSuccessChoiceGuard;
 import com.sun.FSM.Guards.PayedGuard;
-import com.sun.FSM.Guards.ReceivedFailedChoiceGuard;
 import com.sun.FSM.Guards.ReceivedGuard;
-import com.sun.FSM.Guards.ReceivedSuccessChoiceGuard;
+import com.sun.FSM.actions.CommentedAction;
 import com.sun.FSM.actions.DeliveryAction;
 import com.sun.FSM.actions.PayedAction;
-import com.sun.FSM.actions.PayedFailAction;
-import com.sun.FSM.actions.PayedSuccessAction;
 import com.sun.FSM.actions.ReceivedAction;
 import com.sun.FSM.enums.ChangeEvent;
 import com.sun.FSM.enums.OrderStatus;
@@ -33,8 +27,8 @@ import java.util.EnumSet;
  */
 
 @Configuration
-@EnableStateMachine(name = "stateMachineWithoutChoice")
-public class OrderStateMachineConfigWithoutChoice extends EnumStateMachineConfigurerAdapter<OrderStatus, ChangeEvent> {
+@EnableStateMachine(name = "stateMachine")
+public class OrderStateMachine extends EnumStateMachineConfigurerAdapter<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -51,6 +45,9 @@ public class OrderStateMachineConfigWithoutChoice extends EnumStateMachineConfig
     private ReceivedAction receivedAction;
 
     @Resource
+    private CommentedAction commentedAction;
+
+    @Resource
     private DeliveryGuard deliveryGuard;
 
     @Resource
@@ -59,6 +56,9 @@ public class OrderStateMachineConfigWithoutChoice extends EnumStateMachineConfig
     @Resource
     private ReceivedGuard receivedGuard;
 
+    @Resource
+    private CommentGuard commentGuard;
+
 
     @Override
     public void configure(StateMachineStateConfigurer<OrderStatus, ChangeEvent> states) throws Exception {
@@ -66,6 +66,7 @@ public class OrderStateMachineConfigWithoutChoice extends EnumStateMachineConfig
         states.withStates()
                 // 设置初始化状态
                 .initial(OrderStatus.WAIT_PAYMENT)
+                .choice(OrderStatus.FINISH)
                 // 全部状态
                 .states(EnumSet.allOf(OrderStatus.class));
     }
@@ -99,7 +100,13 @@ public class OrderStateMachineConfigWithoutChoice extends EnumStateMachineConfig
                     .target(OrderStatus.FINISH)
                     .event(ChangeEvent.RECEIVED)
                     .guard(receivedGuard)
-                    .action(receivedAction);
+                    .action(receivedAction)
+                .and()
+                // 通过COMMENT 实现由 FINISH => COMMENTED状态转移
+                .withChoice()
+                    .source(OrderStatus.FINISH)
+                    .first(OrderStatus.COMMENTED, commentGuard, commentedAction)
+                    .last(OrderStatus.WAIT_COMMENT);
     }
 
     @Override

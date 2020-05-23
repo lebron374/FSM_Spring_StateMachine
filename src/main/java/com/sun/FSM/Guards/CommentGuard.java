@@ -9,8 +9,11 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author lebron374
+ */
 @Component
-public class DeliverySuccessGuard implements Guard<OrderStatus, ChangeEvent> {
+public class CommentGuard implements Guard<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -20,7 +23,7 @@ public class DeliverySuccessGuard implements Guard<OrderStatus, ChangeEvent> {
         Object payLoad = context.getMessage().getPayload();
         Object messageHeader = context.getMessageHeader("order");
 
-        logger.info("DeliverySuccessGuard payLoad {} messageHeader{}", JSON.toJSONString(payLoad), JSON.toJSONString(messageHeader));
+        logger.info("CommentGuard payLoad {} messageHeader{}", JSON.toJSONString(payLoad), JSON.toJSONString(messageHeader));
 
         return true;
     }

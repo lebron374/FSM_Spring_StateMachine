@@ -9,6 +9,9 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author lebron374
+ */
 @Component
 public class ReceivedGuard implements Guard<OrderStatus, ChangeEvent> {
 

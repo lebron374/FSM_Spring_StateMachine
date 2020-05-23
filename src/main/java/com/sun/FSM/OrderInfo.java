@@ -1,5 +1,8 @@
 package com.sun.FSM;
 
+/**
+ * @author lebron374
+ */
 public class OrderInfo {
 
     private Long oid;

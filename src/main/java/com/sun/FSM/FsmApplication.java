@@ -5,13 +5,15 @@ import com.sun.FSM.enums.ChangeEvent;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 
 import javax.annotation.Resource;
 
+/**
+ * @author lebron374
+ */
 @SpringBootApplication
 public class FsmApplication implements CommandLineRunner {
 
@@ -20,27 +22,19 @@ public class FsmApplication implements CommandLineRunner {
 	}
 
 	@Resource
-	private StateMachine<OrderStatus, ChangeEvent> stateMachineWithoutChoice;
-
-	@Resource
-	private StateMachine<OrderStatus, ChangeEvent> stateMachineWithChoice;
+	private StateMachine<OrderStatus, ChangeEvent> stateMachine;
 
 	@Override
 	public void run(String... args) throws Exception {
-        stateMachineWithoutChoice.start();
-        stateMachineWithChoice.start();
+        stateMachine.start();
 
 		// 测试状态机消息变更
-        // messageTransferV1();
+        messageTransfer();
 
-        // 测试状态机choice变更
-        messageTransferV2();
-
-        stateMachineWithoutChoice.stop();
-        stateMachineWithChoice.stop();
+        stateMachine.stop();
 	}
 
-	private void messageTransferV1() {
+	private void messageTransfer() {
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setOid(123456789L);
         orderInfo.setDesc("test order");
@@ -49,30 +43,16 @@ public class FsmApplication implements CommandLineRunner {
 
         // spring message 的payload设置为消息事件、header为额外需要带的参数
         message = MessageBuilder.withPayload(ChangeEvent.PAYED).setHeader("order", orderInfo).build();
-        stateMachineWithoutChoice.sendEvent(message);
+        stateMachine.sendEvent(message);
 
         message = MessageBuilder.withPayload(ChangeEvent.DELIVERY).setHeader("order", orderInfo).build();
-        stateMachineWithoutChoice.sendEvent(message);
+        stateMachine.sendEvent(message);
 
         message = MessageBuilder.withPayload(ChangeEvent.RECEIVED).setHeader("order", orderInfo).build();
-        stateMachineWithoutChoice.sendEvent(message);
-    }
+        stateMachine.sendEvent(message);
 
-    private void messageTransferV2() {
-        OrderInfo orderInfo = new OrderInfo();
-        orderInfo.setOid(987654321L);
-        orderInfo.setDesc("choice order");
+        message = MessageBuilder.withPayload(ChangeEvent.COMMENT).setHeader("order", orderInfo).build();
+        stateMachine.sendEvent(message);
 
-        Message<ChangeEvent> message = null;
-
-        // spring message 的payload设置为消息事件、header为额外需要带的参数
-        message = MessageBuilder.withPayload(ChangeEvent.PAYED).setHeader("order", orderInfo).build();
-        stateMachineWithChoice.sendEvent(message);
-
-        message = MessageBuilder.withPayload(ChangeEvent.DELIVERY).setHeader("order", orderInfo).build();
-        stateMachineWithChoice.sendEvent(message);
-
-        message = MessageBuilder.withPayload(ChangeEvent.RECEIVED).setHeader("order", orderInfo).build();
-        stateMachineWithChoice.sendEvent(message);
     }
 }

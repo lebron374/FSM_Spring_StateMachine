@@ -28,6 +28,7 @@ public class FsmApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
         stateMachineWithoutChoice.start();
+        stateMachineWithChoice.start();
 
 		// 测试状态机消息变更
         // messageTransferV1();
@@ -36,6 +37,7 @@ public class FsmApplication implements CommandLineRunner {
         messageTransferV2();
 
         stateMachineWithoutChoice.stop();
+        stateMachineWithChoice.stop();
 	}
 
 	private void messageTransferV1() {

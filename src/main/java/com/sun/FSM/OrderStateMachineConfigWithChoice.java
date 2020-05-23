@@ -63,10 +63,6 @@ public class OrderStateMachineConfigWithChoice extends EnumStateMachineConfigure
     @Resource
     private ReceivedFailAction receivedFailAction;
 
-
-    @Resource
-    private ReceivedGuard receivedGuard;
-
     @Resource
     private PayedSuccessChoiceGuard payedSuccessChoiceGuard;
 
@@ -91,6 +87,8 @@ public class OrderStateMachineConfigWithChoice extends EnumStateMachineConfigure
         states.withStates()
                 // 设置初始化状态
                 .initial(OrderStatus.WAIT_PAYMENT)
+                .choice(OrderStatus.WAIT_PAYMENT)
+                .end(OrderStatus.FINISH)
                 // 全部状态
                 .states(EnumSet.allOf(OrderStatus.class));
     }

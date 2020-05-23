@@ -87,7 +87,8 @@ public class OrderStateMachineConfigWithChoice extends EnumStateMachineConfigure
         states.withStates()
                 // 设置初始化状态
                 .initial(OrderStatus.WAIT_PAYMENT)
-                .choice(OrderStatus.WAIT_PAYMENT)
+                .choice(OrderStatus.WAIT_DELIVER)
+                .choice(OrderStatus.WAIT_RECEIVE)
                 .end(OrderStatus.FINISH)
                 // 全部状态
                 .states(EnumSet.allOf(OrderStatus.class));
@@ -121,9 +122,9 @@ public class OrderStateMachineConfigWithChoice extends EnumStateMachineConfigure
                     .last(OrderStatus.FINISH)
                 .and()
                 .withExternal()
-                .source(OrderStatus.WAIT_PAYMENT)
-                .target(OrderStatus.WAIT_DELIVER)
-                .event(ChangeEvent.PAYED);
+                  .source(OrderStatus.WAIT_PAYMENT)
+                    .target(OrderStatus.WAIT_DELIVER)
+                    .event(ChangeEvent.PAYED);
     }
 
     @Override

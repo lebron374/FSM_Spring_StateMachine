@@ -28,7 +28,7 @@ import java.util.EnumSet;
 
 @Configuration
 @EnableStateMachine(name = "stateMachine")
-public class OrderStateMachine extends EnumStateMachineConfigurerAdapter<OrderStatus, ChangeEvent> {
+public class OrderStateMachineConfig extends EnumStateMachineConfigurerAdapter<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 

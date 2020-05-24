@@ -19,8 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CommentGuard implements Guard<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-
-    private Random random = new Random();
     private static AtomicInteger atomicInteger = new AtomicInteger(0);
 
     @Override

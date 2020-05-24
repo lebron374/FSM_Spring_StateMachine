@@ -118,6 +118,4 @@ public class OrderStateMachineConfig extends EnumStateMachineConfigurerAdapter<O
     public void configure(StateMachineConfigurationConfigurer<OrderStatus, ChangeEvent> config) throws Exception {
         config.withConfiguration().listener(orderStateListener);
     }
-
-
 }

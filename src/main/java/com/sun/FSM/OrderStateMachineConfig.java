@@ -8,6 +8,7 @@ import com.sun.FSM.actions.CommentedAction;
 import com.sun.FSM.actions.DeliveryAction;
 import com.sun.FSM.actions.PayedAction;
 import com.sun.FSM.actions.ReceivedAction;
+import com.sun.FSM.actions.UncommentedAction;
 import com.sun.FSM.enums.ChangeEvent;
 import com.sun.FSM.enums.OrderStatus;
 import org.slf4j.Logger;
@@ -46,6 +47,9 @@ public class OrderStateMachineConfig extends EnumStateMachineConfigurerAdapter<O
 
     @Resource
     private CommentedAction commentedAction;
+
+    @Resource
+    private UncommentedAction uncommentedAction;
 
     @Resource
     private DeliveryGuard deliveryGuard;
@@ -106,6 +110,7 @@ public class OrderStateMachineConfig extends EnumStateMachineConfigurerAdapter<O
                 .withChoice()
                     .source(OrderStatus.FINISH)
                     .first(OrderStatus.COMMENTED, commentGuard, commentedAction)
+                    .then(OrderStatus.UNCOMMENTED, commentGuard, uncommentedAction)
                     .last(OrderStatus.WAIT_COMMENT);
     }
 

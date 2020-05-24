@@ -9,6 +9,9 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author lebron374
  */
@@ -17,14 +20,25 @@ public class CommentGuard implements Guard<OrderStatus, ChangeEvent> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    private Random random = new Random();
+    private static AtomicInteger atomicInteger = new AtomicInteger(0);
+
     @Override
     public boolean evaluate(StateContext<OrderStatus, ChangeEvent> context) {
 
         Object payLoad = context.getMessage().getPayload();
         Object messageHeader = context.getMessageHeader("order");
 
-        logger.info("CommentGuard payLoad {} messageHeader{}", JSON.toJSONString(payLoad), JSON.toJSONString(messageHeader));
+        boolean result;
+        if (1 == atomicInteger.incrementAndGet()) {
+            result = false;
+        } else {
+            result = true;
+        }
 
-        return true;
+        logger.info("CommentGuard payLoad {} messageHeader{} flag {}",
+                JSON.toJSONString(payLoad), JSON.toJSONString(messageHeader), atomicInteger.get());
+
+        return result;
     }
 }

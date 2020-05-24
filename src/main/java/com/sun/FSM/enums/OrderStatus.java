@@ -9,5 +9,6 @@ public enum OrderStatus {
     WAIT_RECEIVE,
     FINISH,
     WAIT_COMMENT,
-    COMMENTED;
+    COMMENTED,
+    UNCOMMENTED;
 }
